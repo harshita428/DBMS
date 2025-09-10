@@ -1,0 +1,62 @@
+-- 1. Use your database
+USE 24wh1a05w5;
+
+-- 2. Drop tables if they exist (to start fresh)
+DROP TABLE IF EXISTS Course;
+DROP TABLE IF EXISTS Student;
+
+-- 3. Create Student table
+CREATE TABLE Student (
+    Sid INT PRIMARY KEY AUTO_INCREMENT,
+    Sname VARCHAR(50) NOT NULL UNIQUE,
+    Age INT,
+    Sadd VARCHAR(100)
+);
+
+-- 4. Insert students
+INSERT INTO Student (Sname, Age, Sadd)
+VALUES 
+('Priya', 19, 'Hyderabad'),
+('Anjali', 18, 'Mumbai'),
+('Vikram', 21, 'Chennai'),
+('Sneha', 20, 'Kolkata');
+
+-- 5. Create Course table
+CREATE TABLE Course (
+    Cid INT PRIMARY KEY,
+    Cname VARCHAR(20) NOT NULL,
+    Col_name VARCHAR(50) DEFAULT 'BVRITH',
+    Sid INT,
+    FOREIGN KEY (Sid) REFERENCES Student(Sid)
+);
+
+-- 6. Insert courses (Col_name defaults applied)
+INSERT INTO Course (Cid, Cname, Sid) VALUES (101, 'CSE', 1);
+INSERT INTO Course (Cid, Cname, Col_name, Sid) VALUES (102, 'ECE', 'BVRIT', 2);
+INSERT INTO Course (Cid, Cname, Sid) VALUES (103, 'MECH', 3);
+INSERT INTO Course (Cid, Cname, Sid) VALUES (104, 'CIVIL', 4);
+
+-- 7. View tables
+SELECT * FROM Student;
+SELECT * FROM Course;
+
+-- 8. Add CHECK constraint to Student table
+ALTER TABLE Student
+ADD CONSTRAINT chk_age CHECK (Age >= 18);
+
+-- 9. Test CHECK constraint
+-- This will fail
+-- INSERT INTO Student (Sname, Age, Sadd) VALUES ('Amit', 16, 'Mumbai');
+
+-- Update a student's age
+UPDATE Student SET Age=24 WHERE Sid=4;
+
+-- 10. Drop Col_name column from Course table
+ALTER TABLE Course DROP COLUMN Col_name;
+
+-- 11. Delete a course
+DELETE FROM Course WHERE Cid=104;
+
+-- 12. View final tables
+SELECT * FROM Student;
+SELECT * FROM Course;
